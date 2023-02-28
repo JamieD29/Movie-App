@@ -1,92 +1,94 @@
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  QuestionOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  CaretRightOutlined,
-  CaretLeftOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
-import React, { useState } from "react";
-import logo from "../../assets/img/logo.png";
-const { Header, Sider, Content } = Layout;
-
-
-const getItem = (label, key, icon, children, type) => {
-    return {
-      key,
-      icon,
-      children,
-      label,
-      type,
-    };
-  }
-
-  
-
-
-
-
+import React, { useState, useEffect } from "react";
+import Chart from "react-apexcharts";
+import { Card, Col, Row } from "antd";
+import { useDispatch } from "react-redux";
+import { fetchMovies } from "./thunk";
 
 const Admin = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-  return (
-    <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo bg-amber-300">
-          <img src={logo} alt="" />
-        </div>
-        <Menu
-          theme="light"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          items={[
-            {
-              key: "1",
-              icon: <UserOutlined />,
-              label: "Users",
-            },
-            {
-              key: "2",
-              icon: <VideoCameraOutlined />,
-              label: "Movie",
-            },
-            {
-              key: "3",
-              icon: <QuestionOutlined />,
-              label: "Coming Soon",
-            },
-          ]}
-        />
-      </Sider>
-      <Layout className="site-layout">
-        <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          {React.createElement(
-            collapsed ? CaretRightOutlined : CaretLeftOutlined,
-            {
-              className: "trigger text-3xl",
-              onClick: () => setCollapsed(!collapsed),
-            }
-          )}
+  const [state, setState] = useState({
+    options: {
+      chart: {
+        id: "basic-bar",
+      },
+      xaxis: {
+        categories: [2019, 2020, 2021, 2022, 2023],
+      },
+    },
+    series: [
+      {
+        name: "series-2",
+        data: [30, 40, 45, 50, 49],
+      },
+    ],
+  });
+  const [donut, setDonut] = useState({
+    options: {},
+    series: [44, 55, 41, 17, 15],
+    labels: ["A", "B", "C", "D", "E"],
+  });
 
-          <div className="flex">
-            <p>Hello, Jamie</p>
-            <button className="">Logout</button>
-          </div>
-        </Header>
-      </Layout>
-    </Layout>
+
+
+  return (
+    <>
+      <Row gutter={16} className="mb-10">
+        <Col span={8}>
+          <Card title="Movies" className="text-center" bordered={true}>
+            <h2 className="text-2xl mb-5">1,000 movies</h2>
+            <Chart
+              options={donut.options}
+              series={donut.series}
+              type="donut"
+              width="280"
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="Movies" className="text-center" bordered={true}>
+            <h2 className="text-2xl mb-5">1,000 movies</h2>
+            <Chart
+              options={donut.options}
+              series={donut.series}
+              type="donut"
+              width="280"
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="Movies" className="text-center" bordered={true}>
+            <h2 className="text-2xl mb-5">1,000 movies</h2>
+            <Chart
+              options={donut.options}
+              series={donut.series}
+              type="donut"
+              width="280"
+            />
+          </Card>
+        </Col>
+      </Row>
+
+      <div className="flex justify-around">
+        <div className="revenue">
+          <h1 className="text-4xl text-stone-900 font-semibold">Revenue</h1>
+          <Chart
+            options={state.options}
+            series={state.series}
+            type="bar"
+            width="500"
+          />
+        </div>
+
+        <div className="customer">
+          <h1 className="text-4xl text-stone-900 font-semibold">Customers</h1>
+          <Chart
+            options={state.options}
+            series={state.series}
+            type="line"
+            width="500"
+          />
+        </div>
+      </div>
+    </>
   );
 };
 export default Admin;

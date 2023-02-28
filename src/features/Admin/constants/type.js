@@ -1,0 +1,1 @@
+export const ADMIN_GET_MOVIE = "admin/GET_MOVIE";

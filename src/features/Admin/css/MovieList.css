@@ -1,0 +1,16 @@
+.playBtn{
+  
+    height: fit-content;
+    background-color: white;
+    opacity: 0;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.playBtn:hover{
+    opacity: 1;
+    -webkit-box-shadow: 0px 1px 15px 0px #C21717; 
+box-shadow: 0px 1px 15px 0px #C21717;
+}
+

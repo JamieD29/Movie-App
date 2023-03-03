@@ -8,10 +8,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { Pagination, Modal, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import "../css/MovieList.css";
+import "../../css/MovieList.css";
 import ReactPlayer from "react-player";
-import { fetchMovies } from "../thunk";
-import { useSearchParams } from "react-router-dom";
+import { fetchMovies } from "../../thunk";
+import { NavLink, useSearchParams } from "react-router-dom";
+import { deleteMovie } from "../../thunk";
 const MovieList = () => {
   const dispatch = useDispatch();
 
@@ -41,20 +42,20 @@ const MovieList = () => {
 
   const movies = useSelector((state) => state.adminData.movies);
 
+  const handleDelete = (movieCode, soTrang) => {
+      dispatch(deleteMovie(movieCode, soTrang));
+  }
+
   return (
     <div>
-      <table className="w-full " >
+      <table className="w-full movieList" style={{ borderCollapse: "collapse" }}>
         <thead className=" ">
           <tr className="text-center">
-            <th className="border border-solid   bg-slate-400">
-              Mã Phim
-            </th>
-            <th className="border border-solid  bg-amber-500">Poster</th>
-            <th className="border border-solid  bg-amber-200">
-              Tên Phim
-            </th>
-            <th className="border border-solid  bg-amber-500">Mô tả</th>
-            <th className="border border-solid  bg-amber-200">
+            <th className="  bg-slate-400">Mã Phim</th>
+            <th className=" bg-amber-500">Poster</th>
+            <th className=" bg-amber-200">Tên Phim</th>
+            <th className=" bg-amber-500">Mô tả</th>
+            <th className=" bg-amber-200">
               <SettingOutlined />
             </th>
           </tr>
@@ -62,44 +63,36 @@ const MovieList = () => {
         <tbody>
           {movies.items?.map((item) => {
             return (
-              
               <tr key={item.maPhim} className="">
                 <td className=" font-semibold ">{item.maPhim}</td>
                 <td className=" p-2 ">
                   <div className="poster relative w-24">
                     <img src={item.hinhAnh} className="w-full" alt="" />
-
-                    <button
-                      data-value={item.trailer}
-                      className="absolute playBtn inset-x-0 bottom-0 text-rose-600 font-semibold"
-                      onClick={showModal}
-                    >
-                      Trailer!!
-                    </button>
+                    <div className="absolute play-btn-cover">
+                      <Button
+                        data-value={item.trailer}
+                        className=" play-btn"
+                        onClick={showModal}
+                      ></Button>
+                    </div>
                   </div>
                 </td>
-                <td className=" p-2">
-                  {item.tenPhim}
-                </td>
-                <td className=" p-5">
-                  {item.moTa}
-                </td>
+                <td className=" p-2">{item.tenPhim}</td>
+                <td className=" p-5">{item.moTa}</td>
                 <td>
                   <div className="flex px-2">
-                    <Button className="">
+                    <NavLink className="" to={`/admin/editmovie/${item.maPhim}`}>
                       <EditOutlined className="text-2xl text-sky-500" />
-                    </Button>
+                    </NavLink>
                     <Button className="">
                       <CalendarOutlined className="text-2xl text-green-500" />
                     </Button>
-                    <Button className="">
+                    <Button className="" onClick={()=> handleDelete(item.maPhim, searchParam.get("page"))}>
                       <DeleteOutlined className="text-2xl  text-red-500" />
                     </Button>
                   </div>
                 </td>
               </tr>
-             
-              
             );
           })}
         </tbody>
@@ -108,7 +101,7 @@ const MovieList = () => {
       <Pagination
         className="text-center mt-6"
         current={Number(searchParam.get("page"))}
-        pageSize={8}
+        pageSize={4}
         total={movies.totalCount}
         onChange={(page, pageSize) => {
           // dispatch(fetchMovies(page));

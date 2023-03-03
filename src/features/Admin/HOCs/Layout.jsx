@@ -27,10 +27,12 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 //   import { Content } from "antd/es/layout/layout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 // import { Route, Routes } from "react-router-dom";
 import logo from "../../../assets/img/logo.png";
+import { fetchProfile } from "../Authen/thunk";
 const { Header, Sider, Content } = Layout;
 
 const getItem = (label, key, icon, children, type) => {
@@ -54,10 +56,17 @@ const items = [
 
 const AdminLayout = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  // const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(fetchProfile);
+  },[]);
+
   return (
     <Layout>
       <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>

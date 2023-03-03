@@ -2,6 +2,7 @@ import {produce } from "immer";
 import * as adminType from './constants/type';
 const initialState = {
     movies: {},
+    movieInfo: {}
 }
 
 const reducer = (state = initialState, {type, payload}) => {
@@ -9,6 +10,10 @@ const reducer = (state = initialState, {type, payload}) => {
         switch(type){
             case adminType.ADMIN_GET_MOVIE : {
                 draft.movies = payload;
+                break
+            }
+            case adminType.ADMIN_GET_DETAIL_MOVIE :{
+                draft.movieInfo = payload;
                 break
             }
             default: return draft;

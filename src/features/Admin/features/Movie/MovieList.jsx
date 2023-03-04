@@ -15,7 +15,7 @@ import { NavLink, useSearchParams } from "react-router-dom";
 import { deleteMovie } from "../../thunk";
 const MovieList = () => {
   const dispatch = useDispatch();
-
+  const {adminLogin} = useSelector(state=> state.adminAuth)
   const [searchParam, setUseSearchParam] = useSearchParams();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,7 +43,11 @@ const MovieList = () => {
   const movies = useSelector((state) => state.adminData.movies);
 
   const handleDelete = (movieCode, soTrang) => {
-      dispatch(deleteMovie(movieCode, soTrang));
+    let authorToken = "";
+    
+    !localStorage.getItem("adminToken") ? authorToken =  adminLogin.accessToken : authorToken = localStorage.getItem("adminToken")
+
+    dispatch(deleteMovie(movieCode, soTrang, authorToken));
   }
 
   return (

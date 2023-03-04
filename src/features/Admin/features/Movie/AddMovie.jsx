@@ -23,6 +23,8 @@ const AddMovie = () => {
 
   const [imgSrc, setImgSrc] = useState(null);
 
+  const dayFormat = "DD/MM/YYYY";
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -54,14 +56,16 @@ const AddMovie = () => {
           formData.append("File", values.hinhAnh, values.hinhAnh.name);
         }
       }
-
-      await dispatch(addNewMovie(formData));
-      navigate("/admin/movielist");
+        const result = await dispatch(addNewMovie(formData));
+    if(result){
+       navigate("/admin/movielist");
+    }
+     
     },
   });
 
   const handleChangeDatePicker = (value) => {
-    let date = moment(value).format("DD/MM/YYYY");
+    let date = moment(value).format(dayFormat);
     formik.setFieldValue("ngayKhoiChieu", date);
   };
 
@@ -131,7 +135,7 @@ const AddMovie = () => {
       {/* Mã Nhóm  */}
 
       <Form.Item label="Ngày khởi chiếu">
-        <DatePicker format={"DD/MM/YYYY"} onChange={handleChangeDatePicker} />
+        <DatePicker format={dayFormat} onChange={handleChangeDatePicker} />
       </Form.Item>
 
       <Form.Item label="Đang chiếu" valuePropName="checked">

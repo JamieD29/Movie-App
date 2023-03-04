@@ -1,6 +1,8 @@
 import { appService } from "../../services/app.service";
 import { adminService } from "./services/admin.service";
 import * as adminType from './constants/type';
+import { useNavigate } from "react-router-dom";
+
 
 const groupCode = "GP06";
 
@@ -27,25 +29,49 @@ export const fetchMovies = (soTrang) => async (dispatch) => {
 export const addNewMovie = (formData) => {
    
     return async (dispatch) => {
-    
+      
         try {
             let respond = await adminService.addNewMovie(formData);
-            alert('Thêm thành công')
-      
+            await alert('Thêm thành công')
+            return true;
         }
         catch(err){
-           // alert(err.response.data.content);
+            await alert(err.response.data.content);
             console.log(err);
+            return false;
         }
     }
 }
 
-export const deleteMovie = (movieCode, soTrang) =>{
+export const updateMovie = (formData) => {
+   
+  return async (dispatch) => {
+ 
+      try {
+         
+          let respond = await adminService.updateMovieInfo(formData);
+          console.log(respond);
+          await alert('Cap nhat thanh cong')
+        
+          return true;
+      }
+      catch(err){
+          await alert(err.response.data.content);
+          console.log(err);
+          return false;
+      }
+  }
+}
+
+export const deleteMovie = (movieCode, soTrang, authorToken) =>{
     return async dispatch =>{
       try{
         const res =  await adminService.deleteMovie({params: {
           MaPhim: movieCode
-        }});
+        },headers: {
+          Authorization : "Bearer " + authorToken
+        }
+      });
 
         console.log(res);
 
@@ -63,7 +89,11 @@ export const deleteMovie = (movieCode, soTrang) =>{
       try{
        
         const res = await adminService.getMovieInfo(movieCode)
-        console.log(res.data.content);
+        // console.log(res.data.content);
+        dispatch({
+          type: adminType.ADMIN_GET_DETAIL_MOVIE,
+          payload: res.data.content,
+        })
       }
       catch(err){
         console.log(err);

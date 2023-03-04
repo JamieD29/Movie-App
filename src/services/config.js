@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const BASE_URL = "https://movienew.cybersoft.edu.vn/api";
 

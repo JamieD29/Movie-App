@@ -8,5 +8,6 @@ export const adminService = {
   ,
   getMovieInfo: (movieCode)=>{
     return  https.get(`/QuanLyPhim/LayThongTinPhim?MaPhim=${movieCode}`)
-  }
+  },
+  updateMovieInfo : (formData) => https.post("/QuanLyPhim/CapNhatPhimUpload", formData)
 };

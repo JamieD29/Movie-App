@@ -11,27 +11,30 @@ import { useDispatch, useSelector } from "react-redux";
 import "../../css/MovieList.css";
 import ReactPlayer from "react-player";
 import { fetchMovies } from "../../thunk";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { deleteMovie } from "../../thunk";
 const MovieList = () => {
+  const navigate =useNavigate();
   const dispatch = useDispatch();
-  const {adminLogin} = useSelector(state=> state.adminAuth)
+  const {adminLogin} = useSelector(state => state.adminAuth)
+  const movies = useSelector((state) => state.adminData.movies);
   const [searchParam, setUseSearchParam] = useSearchParams();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [urlVideo, setUrlVideo] = useState();
+  
 
-  const showModal = (eve) => {
+  const showModal =  (eve) => {
     var attribute = eve.target.attributes.getNamedItem("data-value").value;
-    setIsModalOpen(true);
-    setUrlVideo(attribute);
+     setIsModalOpen(true);
+     setUrlVideo(attribute);
   };
 
   const handleOk = () => {
     setIsModalOpen(false);
     setUrlVideo("");
   };
-  const handleCancel = () => {
+  const handleCancel =  () => {
     setIsModalOpen(false);
     setUrlVideo("");
   };
@@ -40,7 +43,7 @@ const MovieList = () => {
     dispatch(fetchMovies(searchParam.get("page")));
   }, [searchParam.get("page")]);
 
-  const movies = useSelector((state) => state.adminData.movies);
+  
 
   const handleDelete = (movieCode, soTrang) => {
     let authorToken = "";
@@ -49,6 +52,16 @@ const MovieList = () => {
 
     dispatch(deleteMovie(movieCode, soTrang, authorToken));
   }
+
+  const handleEdit = (movieCode) => {
+      return navigate(`/admin/editmovie/${movieCode}`);
+  }
+
+  const handleEditShowTimes = (moviesCode) =>{
+    return navigate(`/admin/showtimes/${moviesCode}`);
+  }
+
+
 
   return (
     <div>
@@ -85,13 +98,13 @@ const MovieList = () => {
                 <td className=" p-5">{item.moTa}</td>
                 <td>
                   <div className="flex px-2">
-                    <NavLink className="" to={`/admin/editmovie/${item.maPhim}`}>
+                    <Button className="" onClickCapture={()=> handleEdit(item.maPhim)}>
                       <EditOutlined className="text-2xl text-sky-500" />
-                    </NavLink>
-                    <Button className="">
+                    </Button>
+                    <Button className="" onClickCapture={()=> handleEditShowTimes(item.maPhim)}>
                       <CalendarOutlined className="text-2xl text-green-500" />
                     </Button>
-                    <Button className="" onClick={()=> handleDelete(item.maPhim, searchParam.get("page"))}>
+                    <Button className="" onClickCapture={()=> handleDelete(item.maPhim, searchParam.get("page"))}>
                       <DeleteOutlined className="text-2xl  text-red-500" />
                     </Button>
                   </div>
@@ -114,17 +127,21 @@ const MovieList = () => {
       />
 
       <Modal
-        title="Trailer"
+        
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={null}
         width="700px"
+        wrapClassName=""
       >
-        {urlVideo ? (
+      {urlVideo ? (
           <ReactPlayer controls url={urlVideo} />
         ) : (
           <h1 className="text-4xl text-red-600 font-bold">No Video</h1>
         )}
+    
+        
       </Modal>
     </div>
   );

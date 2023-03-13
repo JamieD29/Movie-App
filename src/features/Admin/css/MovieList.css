@@ -15,6 +15,10 @@
 .movieList td{
   border-bottom: 1px solid #FCD34D;
 }
+.ant-modal-content {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
 
 .play-btn-cover{
   top: 50%;

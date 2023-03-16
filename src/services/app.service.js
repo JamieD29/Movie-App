@@ -5,5 +5,5 @@ export const appService = {
     https.get("/QuanLyPhim/LayDanhSachPhimPhanTrang", params),
   login: (data) => https.post("/QuanLyNguoiDung/DangNhap", data),
   signup: (data) => https.post("/QuanLyNguoiDung/DangKy", data),
-  fetchProfile : () => { return https.post("/QuanLyNguoiDung/ThongTinTaiKhoan")},
+  fetchProfile : (headers) => { return https.post("/QuanLyNguoiDung/ThongTinTaiKhoan", null ,headers)},
 };

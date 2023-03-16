@@ -16,7 +16,7 @@ import {number, object, string} from 'yup';
     const dispatch = useDispatch();
     const [componentSize, setComponentSize] = useState('default');
     const typesofUser = useSelector(state=> state.adminData.typesofUser);
-
+    const { adminLogin } = useSelector((state) => state.adminAuth);
     const pattern = /^((([,.'-]| )(?<!( {2}|[,.'-]{2})))*[A-Za-z]+)+[,.'-]?$/g;
 
     const userSchema = object({
@@ -47,10 +47,13 @@ import {number, object, string} from 'yup';
         validationSchema: userSchema,
         onSubmit: async values =>{
           
-            
+          let token = ""; 
+
+          localStorage.getItem('adminToken') === null ? token = adminLogin.accessToken : token = localStorage.getItem('adminToken');
+
           console.log(values);
           
-          const result = await dispatch(createNewUser(values));
+          const result = await dispatch(createNewUser(values, token));
           console.log(result);
           if(result){
             for(let key in values){
@@ -132,7 +135,7 @@ import {number, object, string} from 'yup';
         </Form.Item>
 
         <Form.Item className='col-span-2 ml-80'>
-          <Button type='primary' className='w-full font-bold uppercase' onClickCapture={createUserFormik.handleSubmit}>Add</Button>
+          <Button type='default' className='w-full font-bold uppercase bg-amber-500 hover:bg-sky-200 text-white  border-none' onClickCapture={createUserFormik.handleSubmit}>Add</Button>
         </Form.Item>
       </Form>  
         </>

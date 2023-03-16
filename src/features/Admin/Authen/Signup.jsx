@@ -1,4 +1,4 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { LeftCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   Button,
   Cascader,
@@ -44,8 +44,8 @@ const Signup = () => {
     validationSchema : userSchema, 
     onSubmit: async values=>{
       console.log(values);
-     await dispatch(signup(values));
-      navigate('/admin/signin');
+      const result = await dispatch(signup(values));
+      result && navigate('/admin/signin');
     }
   })
   console.log(user.errors);
@@ -59,7 +59,11 @@ const Signup = () => {
       size={componentSize}
       
     >
+      <div className="flex items-center">
+      <button className='mr-2 border-none bg-transparent cursor-pointer hover:text-rose-600 active:text-rose-300 ' onClick={() => navigate('/admin/signin')}><LeftCircleOutlined className='text-3xl mt-4'/></button>
       <h1 className='text-center text-4xl text-gray-800'>Sign up</h1>
+      </div>
+          
 
          <Form.Item>
         <h4 className='m-0 p-0'>Full name:</h4>
@@ -87,7 +91,7 @@ const Signup = () => {
 
       <Form.Item>
         <h4 className='m-0 p-0'>Password: </h4>
-        <Input className='w-80' onBlur={user.handleBlur} name="matKhau"  onChange={user.handleChange}/>
+        <Input.Password className='w-80' onBlur={user.handleBlur} name="matKhau"  onChange={user.handleChange}/>
         {user.errors.matKhau  && user.touched.matKhau && <div className='w-80'><p className='text-sm p-0 m-0 whitespace-pre-line text-rose-600'>{user.errors.matKhau}</p></div> }
       </Form.Item>
     

@@ -18,8 +18,7 @@ import {number, object, string} from 'yup';
     const [componentSize, setComponentSize] = useState('default');
     const typesofUser = useSelector(state=> state.adminData.typesofUser);
     const userInfo = useSelector(state => state.adminData.userInfo);
-
-    console.log(userInfo);
+    const {adminLogin} = useSelector(state => state.adminAuth);
 
     const pattern = /^((([,.'-]| )(?<!( {2}|[,.'-]{2})))*[A-Za-z]+)+[,.'-]?$/g;
 
@@ -65,8 +64,12 @@ import {number, object, string} from 'yup';
 
 
     useEffect( () => {
-         dispatch(fetchTypesOfUser)
-        dispatch(getUserInfo(params.id))
+      let token = ""; 
+
+      localStorage.getItem('adminToken') === null ? token = adminLogin.accessToken : token = localStorage.getItem('adminToken');
+
+        dispatch(fetchTypesOfUser)
+        dispatch(getUserInfo(params.id, token))
     },[]);
 
   

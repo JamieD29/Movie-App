@@ -24,6 +24,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { isMoment } from "moment/moment";
+import {number, object, string} from 'yup';
+import { LeftCircleOutlined } from "@ant-design/icons";
 
 const EditMovie = () => {
   const params = useParams();
@@ -31,8 +33,20 @@ const EditMovie = () => {
   const navigate = useNavigate();
   const [imgSrc, setImgSrc] = useState(null);
   const dateFormat = "DD/MM/YYYY";
+
   const { movieInfo } = useSelector((state) => state.adminData);
-  //console.log(movieInfo);
+  const { adminLogin } = useSelector((state) => state.adminAuth);
+
+
+    const movieSchema = object({
+    tenPhim: string().required("*Please enter movie name").trim(),
+    trailer: string().required("*Please enter movie trailer").url("*This is not a url.").trim(),
+    moTa: string().required("*Please enter movie description"),
+    ngayKhoiChieu: string().required("*Choose released date").trim(),
+   // hinhAnh: string().required("*Movie's image is empty"),
+    danhGia: number().min(1, "Enter movie rating")
+  });
+
   useEffect(() => {
     dispatch(getMovieInfo(params.id));
   }, []);
@@ -93,9 +107,14 @@ const EditMovie = () => {
       danhGia: movieInfo?.danhGia,
       hinhAnh: null,
     },
+    validationSchema: movieSchema,
     onSubmit: async (values) => {
       let formData = new FormData();
+      let token = ""; 
 
+      localStorage.getItem('adminToken') === null ? token = adminLogin.accessToken : token = localStorage.getItem('adminToken');
+
+      console.log(token);
       for (let key in values) {
         if (key !== "hinhAnh") {
           formData.append(key, values[key]);
@@ -106,7 +125,7 @@ const EditMovie = () => {
         }
       }
 
-      const result = await dispatch(updateMovie(formData));
+      const result = await dispatch(updateMovie(formData, token));
      
       if(result){
         navigate(-1);
@@ -117,8 +136,14 @@ const EditMovie = () => {
 
   const [componentSize, setComponentSize] = useState("default");
   return (
-    <Form
-      // onSubmitCapture={formik.handleSubmit}
+    <div className="ml-10 ">
+        <div className="flex items-center mb-10">
+  <button  className="m-0 mr-6 pt-2 border-none bg-transparent cursor-pointer hover:text-rose-600 active:text-rose-300" onClick={()=>{ return navigate(-1); }}><LeftCircleOutlined  className="text-2xl"/></button>
+  <h3 className="m-0 uppercase text-2xl">Editing Movie</h3>
+  </div>
+
+  <Form
+       onSubmitCapture={formik.handleSubmit}
       labelCol={{
         span: 4,
       }}
@@ -131,10 +156,10 @@ const EditMovie = () => {
       }}
       size={componentSize}
       style={{
-        maxWidth: 600,
+        maxWidth: 1000,
       }}
     >
-      <h3>Edit Movie</h3>
+     
 
       <Form.Item label="Form Size" name="size">
         <Radio.Group>
@@ -149,6 +174,7 @@ const EditMovie = () => {
           onChange={formik.handleChange}
           value={formik.values.tenPhim}
         />
+        {formik.errors.tenPhim && formik.touched.tenPhim && <p className='text-sm p-0 m-0 text-rose-600'>{formik.errors.tenPhim}</p>}
       </Form.Item>
       <Form.Item label="Trailer phim">
         <Input
@@ -156,6 +182,7 @@ const EditMovie = () => {
           onChange={formik.handleChange}
           value={formik.values.trailer}
         />
+        {formik.errors.trailer && formik.touched.trailer && <p className='text-sm p-0 m-0 text-rose-600'>{formik.errors.trailer}</p>}
       </Form.Item>
       <Form.Item label="Mô tả">
         <TextArea
@@ -163,6 +190,8 @@ const EditMovie = () => {
           onChange={formik.handleChange}
           value={formik.values.moTa}
         />
+      {formik.errors.moTa && formik.touched.moTa && <p className='text-sm p-0 m-0 text-rose-600'>{formik.errors.moTa}</p>}
+
       </Form.Item>
 
       {/* Mã Nhóm  */}
@@ -174,7 +203,8 @@ const EditMovie = () => {
           format={dateFormat}
           placeholder={dateFormat}
         />
-        {/* <DatePicker onChange={onChange} defaultValue={dayjs('02-02-2014', "DD/MM/YYYY")} format="DD/MM/YYYY"/> */}
+              {formik.errors.ngayKhoiChieu  && <p className='text-sm p-0 m-0 text-rose-600'>{formik.errors.ngayKhoiChieu}</p>}
+
       </Form.Item>
 
       <Form.Item label="Đang chiếu" valuePropName="checked">
@@ -204,6 +234,8 @@ const EditMovie = () => {
           min={0}
           max={10}
         />
+              {formik.errors.danhGia && formik.touched.danhGia && <p className='text-sm p-0 m-0 text-rose-600'>{formik.errors.danhGia}</p>}
+
       </Form.Item>
 
       <Form.Item label="Hình ảnh  ">
@@ -223,15 +255,17 @@ const EditMovie = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button
+        <button
           type="default"
-          className="bg-rose-600"
-          onClickCapture={formik.handleSubmit}
+          className="border-none rounded-xl p-2 cursor-pointer shadow-md bg-amber-500 hover:bg-amber-200 hover:text-amber-500 text-white font-bold text-lg active:shadow-sm"
+          onClick={formik.handleSubmit}
         >
           Update
-        </Button>
+        </button>
       </Form.Item>
     </Form>
+    </div>
+    
   );
 };
 

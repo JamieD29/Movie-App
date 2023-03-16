@@ -1,21 +1,23 @@
 import { appService } from "../../services/app.service";
 import { adminService } from "./services/admin.service";
 import * as adminType from './constants/type';
-import { useNavigate } from "react-router-dom";
-
+import Swal from "sweetalert2";
 
 const groupCode = "GP06";
 
 
-export const fetchMovies = (soTrang) => async (dispatch) => {
+export const fetchMovies = (soTrang, tenPhim) => async (dispatch) => {
     try{
+      dispatch({type: adminType.ADMIN_GET_MOVIES_PENDING})
+
         const respond = await appService.getMoviePagination({params:{
             maNhom: groupCode, 
+            tenPhim,
             soTrang,
             soPhanTuTrenTrang: 4
         },});
         dispatch({
-            type: adminType.ADMIN_GET_MOVIE,
+            type: adminType.ADMIN_GET_MOVIES_FULFILLED,
             payload: respond.data.content,
         })
     }catch(err){
@@ -29,31 +31,55 @@ export const addNewMovie = (formData) => {
       
         try {
             let respond = await adminService.addNewMovie(formData);
-            await alert('Thêm thành công')
+            await Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Thêm thành công',
+              showConfirmButton: false,
+              timer: 1500
+            })
             return true;
         }
         catch(err){
-            await alert(err.response.data.content);
+            await  Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: err.response.data.content,
+            });
             console.log(err);
             return false;
         }
     }
 }
 
-export const updateMovie = (formData) => {
+export const updateMovie = (formData, authorToken) => {
    
   return async (dispatch) => {
  
       try {
          
-          let respond = await adminService.updateMovieInfo(formData);
+          let respond = await adminService.updateMovieInfo(formData, {headers: {
+            Authorization : "Bearer " + authorToken
+          }});
           console.log(respond);
-          await alert('Cap nhat thanh cong')
+          await Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Chỉnh sửa thành công ',
+            showConfirmButton: false,
+            timer: 1500
+          })
         
           return true;
       }
       catch(err){
-          await alert(err.response.data.content);
+        
+
+           await Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: err.response.data.content,
+          });
           console.log(err);
           return false;
       }
@@ -72,7 +98,13 @@ export const deleteMovie = (movieCode, soTrang, authorToken) =>{
 
         console.log(res);
 
-       alert('Xóa thành công')
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Xóa thành công ',
+          showConfirmButton: false,
+          timer: 1500
+        })
         dispatch(fetchMovies(soTrang))
       }
       catch(err){
@@ -130,33 +162,51 @@ export const fetchCinemaChainOfBrand = (brandCode) => async dispatch => {
 
 }
 
-export const createNewShowTime = (showTime)=> async dispatch => {
+export const createNewShowTime = (showTime,token)=> async dispatch => {
   try{
-      const respond = await adminService.createNewShowTime(showTime)
+      const respond = await adminService.createNewShowTime(showTime, {
+        headers: {
+          Authorization : "Bearer " + token
+        }
+      })
 
-      alert("Them lich thanh cong")
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Thành công ',
+        showConfirmButton: false,
+        timer: 1500
+      })
 
       console.log(respond);
 
       return true;
   }
   catch(err){
-    alert(err.response.data.content)
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: err.response.data.content,
+    });
     console.log(err);
     return false;
   }
 }
 
 
-export const fetchUserPagination = (soTrang, soPhanTuTrenTrang) => async dispatch =>{
+export const fetchUserPagination = (soTrang, soPhanTuTrenTrang, tuKhoa) => async dispatch =>{
   try{
+    dispatch({
+      type: adminType.ADMIN_FETCH_USERS_PENDING
+    })
     const respond = await adminService.fetchUserPagination({params:{
         maNhom: groupCode, 
+        tuKhoa,
         soTrang,
         soPhanTuTrenTrang,
     },});
     dispatch({
-        type: adminType.ADMIN_FETCH_USERS,
+        type: adminType.ADMIN_FETCH_USERS_FULFILL,
         payload: respond.data.content,
     })
 }catch(err){
@@ -178,12 +228,29 @@ export const fetchTypesOfUser = async dispatch =>{
   }
 }
 
-export const createNewUser = (user) => async dispatch =>{
+export const createNewUser = (user, token) => async dispatch =>{
   try{
-    const respond = await adminService.createNewUser(user);
-    alert("Adding new user success!!")
+    const respond = await adminService.createNewUser(user,{
+      headers: {
+        Authorization : "Bearer " + token
+      }
+    });
+
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Thêm thành công ',
+      showConfirmButton: false,
+      timer: 1500
+    })
+  
     return true;
   }catch(err){
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: err.response.data.content,
+    });
     console.log(err);
     return false
   }
@@ -201,21 +268,36 @@ export const deleteUser = (taiKhoan, soTrang, authorToken, soPhanTuTrenTrang) =>
 
       console.log(res);
 
-     alert('Xóa thành công')
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Xóa thành công ',
+        showConfirmButton: false,
+        timer: 1500
+      })
       dispatch(fetchUserPagination(soTrang, soPhanTuTrenTrang))
     }
     catch(err){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: err.response.data.content,
+      });
       console.log(err);
     }
   }
 }
 
 
-export const getUserInfo = (taiKhoan) =>{
+export const getUserInfo = (taiKhoan, token) =>{
   return async dispatch =>{
     try{
      
-      const res = await adminService.getUserInfo(taiKhoan)
+      const res = await adminService.getUserInfo(taiKhoan,{
+        headers: {
+          Authorization : "Bearer " + token
+        }
+      })
       // console.log(res.data.content);
       dispatch({
         type: adminType.ADMIN_GET_DETAIL_USER,

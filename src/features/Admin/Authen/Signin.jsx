@@ -41,8 +41,9 @@ const Signin = () => {
   const formik = useFormik({
     initialValues,
     onSubmit : async values =>{
-    await  dispatch(login(values))
-    navigate('/admin');
+      console.log(values);
+    const result = await  dispatch(login(values))
+    result && navigate('/admin');
     },
     validate,
   })
@@ -86,8 +87,8 @@ const [auth, setAuth] = useState({token : localStorage.getItem('adminToken')}) ;
       className="font-bold"
       
     >
-      <Input name='taiKhoan'  onChange={formik.handleChange}/>
-      {formik.errors.taiKhoan && <h5 className='text-rose-600 m-0'>{formik.errors.taiKhoan}</h5> }
+      <Input name='taiKhoan' onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+      {formik.errors.taiKhoan && formik.touched.taiKhoan &&<h5 className='text-rose-600 m-0'>{formik.errors.taiKhoan}</h5> }
     </Form.Item>
   
     <Form.Item
@@ -96,11 +97,11 @@ const [auth, setAuth] = useState({token : localStorage.getItem('adminToken')}) ;
    
       className="font-bold "
     >
-      <Input.Password name='matKhau'  onChange={formik.handleChange}/>
-      {formik.errors.matKhau && <h5 className='text-rose-600 m-0'>{formik.errors.matKhau}</h5> }
+      <Input.Password name='matKhau' onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+      {formik.errors.matKhau && formik.touched.matKhau &&  <h5 className='text-rose-600 m-0'>{formik.errors.matKhau}</h5> }
     </Form.Item>
 
-    <NavLink className="text-right inline-block w-full mb-5 mt-0 underline decoration-solid" to='/admin/signup'>Create new account</NavLink>
+    <NavLink className="text-right inline-block w-full mb-5 mt-0 underline decoration-solid" to='/admin/signup'>Create a new account</NavLink>
 
   
     

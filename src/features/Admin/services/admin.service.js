@@ -9,15 +9,15 @@ export const adminService = {
   getMovieInfo: (movieCode)=>{
     return  https.get(`/QuanLyPhim/LayThongTinPhim?MaPhim=${movieCode}`)
   },
-  updateMovieInfo : (formData) => https.post("/QuanLyPhim/CapNhatPhimUpload", formData),
+  updateMovieInfo : (formData, authorToken) => https.post("/QuanLyPhim/CapNhatPhimUpload", formData, authorToken),
 
   fetchCinemaBrands: () => https.get("/QuanLyRap/LayThongTinHeThongRap"),
   fetchCinemaChainOfBrand : (params) => https.get("/QuanLyRap/LayThongTinCumRapTheoHeThong", params),
-  createNewShowTime: (params) => https.post("/QuanLyDatVe/TaoLichChieu", params),
+  createNewShowTime: (params, token) => https.post("/QuanLyDatVe/TaoLichChieu", params, token),
   fetchUserPagination: params => https.get("/QuanLyNguoiDung/LayDanhSachNguoiDungPhanTrang", params),
   fetchTypesOfUser: ()=> https.get("/QuanLyNguoiDung/LayDanhSachLoaiNguoiDung"),
-  createNewUser: (user) => https.post("/QuanLyNguoiDung/ThemNguoiDung", user),
+  createNewUser: (user, authorToken) => https.post("/QuanLyNguoiDung/ThemNguoiDung", user, authorToken),
   deleteUser: (params) => https.delete("/QuanLyNguoiDung/XoaNguoiDung", params),
-  getUserInfo: (taiKhoan) => https.post(`/QuanLyNguoiDung/LayThongTinNguoiDung?taiKhoan=${taiKhoan}`),
+  getUserInfo: (taiKhoan, authorToken) => https.post(`/QuanLyNguoiDung/LayThongTinNguoiDung?taiKhoan=${taiKhoan}`, null , authorToken),
   editUser:(user) => https.post("/QuanLyNguoiDung/CapNhatThongTinNguoiDung", user)
 };

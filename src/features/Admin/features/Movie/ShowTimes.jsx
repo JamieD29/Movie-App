@@ -1,3 +1,4 @@
+import { LeftCircleOutlined } from "@ant-design/icons";
 import {
   Button,
   Cascader,
@@ -16,8 +17,8 @@ import moment from "moment/moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { createNewShowTime, fetchCinemaBrands, fetchCinemaChainOfBrand } from "../../thunk";
-
+import { createNewShowTime, fetchCinemaBrands, fetchCinemaChainOfBrand, getMovieInfo } from "../../thunk";
+import {number, object, string} from 'yup';
 const ShowTimes = () => {
   const [componentSize, setComponentSize] = useState("default");
   const onFormLayoutChange = ({ size }) => {
@@ -39,13 +40,9 @@ const ShowTimes = () => {
     dispatch(fetchCinemaChainOfBrand(value));
   };
 
-  // const onChange = (value, dateString) => {
-  //   console.log("Selected Time: ", value);
-  //   console.log(
-  //     "Formatted Selected Time: ",
-  //     moment(dateString, "DD/MM/YYYY HH:mm")
-  //   );
-  // };
+  const { movieInfo } = useSelector((state) => state.adminData);
+  console.log(movieInfo);
+  const { adminLogin } = useSelector((state) => state.adminAuth);
 
   //Fri Apr 21 2023 00:00:00 GMT+0700 (Indochina Time) to 21/04/2023
   const convertDatenTime = (str) => {
@@ -60,6 +57,10 @@ const ShowTimes = () => {
     return tempDate + " " + Time;
   };
 
+  const showTimeSchema = object({
+    ngayChieuGioChieu: string().required("*Please select date")
+  });
+
   const onOk = (value) => {
     handleChangeDatePicker(value);
   };
@@ -71,11 +72,15 @@ const ShowTimes = () => {
       maRap: "",
       giaVe: 0,
     },
+    validationSchema: showTimeSchema,
     onSubmit: async (values) => {
+      let token = ""; 
+
+      localStorage.getItem('adminToken') === null ? token = adminLogin.accessToken : token = localStorage.getItem('adminToken');
       
-      const result = await dispatch(createNewShowTime(values))
+      const result = await dispatch(createNewShowTime(values, token))
       console.log(result);
-      result && navigate(-1);
+      //result && navigate(-1);
     },
   });
 
@@ -92,11 +97,19 @@ const ShowTimes = () => {
 
   useEffect(() => {
     dispatch(fetchCinemaBrands);
-    
+    dispatch(getMovieInfo(id.id));
    
   }, []);
 
   return (
+    <div className="flex justify-around items-start">
+
+<button  className=" mr-6 pt-2 border-none bg-transparent cursor-pointer hover:text-rose-600 active:text-rose-300" onClick={()=>{ return navigate(-1); }}><LeftCircleOutlined  className="text-3xl"/></button>
+
+    <div className="w-60">
+      <img className="w-full" src={movieInfo?.hinhAnh} alt="" />
+      <h2 className="text-2xl"><span className="font-thin">Name:</span>  {movieInfo?.tenPhim}</h2>
+    </div>
     <Form
       labelCol={{
         span: 10,
@@ -104,16 +117,17 @@ const ShowTimes = () => {
       wrapperCol={{
         span: 14,
       }}
-      layout="horizontal"
+      layout="vertical"
       initialValues={{
         size: componentSize,
       }}
       onValuesChange={onFormLayoutChange}
       size={componentSize}
       style={{
-        maxWidth: 600,
+        width: 800,
       }}
     >
+    <h3 className="text-3xl mb-4">ADDING SHOWTIME</h3>
       <Form.Item label="Form Size" name="size">
         <Radio.Group>
           <Radio.Button value="small">Small</Radio.Button>
@@ -153,16 +167,19 @@ const ShowTimes = () => {
       </Form.Item>
 
       <Form.Item label="Ngày + Giờ chiếu">
-        <DatePicker showTime onOk={onOk} format="DD/MM/YYYY HH:mm:ss" />
+        <DatePicker showTime onOk={onOk} format="DD/MM/YYYY HH:mm:ss" onBlur={showTime.handleBlur}/>
+        {showTime.errors.ngayChieuGioChieu && showTime.touched.ngayChieuGioChieu &&<p className='text-sm p-0 m-0 text-rose-600'>{showTime.errors.ngayChieuGioChieu}</p>}
       </Form.Item>
       <Form.Item label="Giá vé">
         <InputNumber onChange={handleGetValue("giaVe")} />
       </Form.Item>
 
-      <Form.Item label="Button">
-        <Button onClickCapture={showTime.handleSubmit}>Button</Button>
+      <Form.Item >
+        <Button  onClickCapture={showTime.handleSubmit}>OK!!</Button>
       </Form.Item>
     </Form>
+    </div>
+  
   );
 };
 export default ShowTimes;

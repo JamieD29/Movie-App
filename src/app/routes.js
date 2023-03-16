@@ -21,3 +21,7 @@ export const routes = [
     {path: "showtimes/:id", component: ShowTimes}
   ];
   
+
+  export const userRoutes = [
+      
+  ];

@@ -6,21 +6,37 @@ import Swal from "sweetalert2";
 import { adminService } from "../services/admin.service";
 import { fetchMovies } from "../thunk";
 
-export const fetchProfile = async (dispatch) => {
+export const fetchProfile = (authToken) => async (dispatch) => {
   try {
-    const res = await appService.fetchProfile();
+    
     dispatch({
-      type: actionType.ADMIN_SIGN_IN,
+      type: actionType.ADMIN_SIGIN_PENDING
+    })
+    const res = await appService.fetchProfile({
+      headers: {
+        Authorization : "Bearer " + authToken
+      },
+    });
+    dispatch({
+      type: actionType.ADMIN_LOGGED,
       payload: res.data.content,
     });
   } catch (err) {
+    dispatch({
+      type: actionType.ADMIN_SIGIN_REJECTED
+    })
     console.log(err);
   }
 };
 
 export const login = (data) => {
   return async (dispatch) => {
+
     try {
+      dispatch({
+        type: actionType.ADMIN_SIGIN_PENDING
+      })
+
       const respond = await appService.login(data);
 
       console.log(respond.data.content);
@@ -31,19 +47,30 @@ export const login = (data) => {
       //   text: 'Your account role is not ADMIN',
       // });
 
-      alert("Dang nhap thanh cong");
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Đăng nhập thành công ',
+        showConfirmButton: false,
+        timer: 1500
+      })
       dispatch({
         type: actionType.ADMIN_SIGN_IN,
         payload: respond.data.content,
       });
 
       localStorage.setItem("adminToken", respond.data.content.accessToken);
+      return true;
     } catch (err) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: err.response.data.content,
       });
+      dispatch({
+        type: actionType.ADMIN_SIGIN_REJECTED
+      })
+      return false;
     }
   };
 };
@@ -61,7 +88,13 @@ export const signup = (data) => {
       //   text: 'Your account role is not ADMIN',
       // });
 
-      alert("Dang ky thanh cong");
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Tạo tài khoản thành công ',
+        showConfirmButton: false,
+        timer: 1500
+      })
 
       // dispatch({
       //   type: actionType.ADMIN_SIGN_IN,
@@ -69,12 +102,15 @@ export const signup = (data) => {
       // })
 
       // localStorage.setItem('adminToken', respond.data.content.accessToken);
+      return true
     } catch (err) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: err.response.data.content,
       });
+      return false
     }
+
   };
 };

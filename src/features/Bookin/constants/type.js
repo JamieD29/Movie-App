@@ -1,0 +1,17 @@
+export const USER_FETCH_BANNERS = "user/FETCH_BANNERS";
+export const USER_FETCH_BANNERS_PENDING = "user/FETCH_BANNERS_PENDING";
+
+// Movies 
+export const USER_FETCH_MOVIES = "user/FETCH_MOVIES";
+export const USER_FETCH_MOVIES_PENDING = "user/FETCH_MOVIES_PENDING";
+
+export const USER_FETCH_SHOWIN_MOVIES = "user/FETCH_SHOWIN_MOIVES";
+export const USER_FETCH_COMIN_MOVIES = "user/FETCH_COMIN_MOIVES";
+export const USER_FETCH_HOT_MOVIES = "user/FETCH_HOT_MOIVES";
+
+export const USER_FETCH_SCHEDULE ='user/FETCH_SCHEDULE';
+
+
+//Movie Information
+export const USER_FETCH_MOVIE_INFO = 'user/FETCH_MOVIE_INFO';
+// export const USER_FETCH_MOVIE_SHOWTIME = 'user/FETCH_MOVIE_SHOWTIME';

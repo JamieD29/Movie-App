@@ -1,12 +1,12 @@
-.bg-form{
-    background-image: url('../../../assets/img/background.jpg');
-    background-repeat: no-repeat;
+.user-bg-form{
+    background-image: url('../../../../assets/img/user_bg.jpg');
+    background-repeat: repeat-x;
     background-size: contain;
-    background-position:  center ;
+    background-position:  center left;
     background-color: #E66665;
 }
 
-.bg-form::after{
+.user-bg-form::after{
     content: "";
     position: absolute;
     background-color: #0000003a;

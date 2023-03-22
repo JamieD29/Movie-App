@@ -7,7 +7,10 @@ import EditMovie from "../features/Admin/features/Movie/EditMovie";
 import ShowTimes from "../features/Admin/features/Movie/ShowTimes";
 import AddUser from "../features/Admin/features/User/AddUser";
 import EditUser from "../features/Admin/features/User/EditUser";
-
+import Home from "../features/Bookin/Home";
+import Details from "../features/Bookin/Details";
+import Login from '../features/Authen/Login';
+import Signup from "../features/Authen/Signup";
 
 export const routes = [
     { path: "/admin", component: Admin },
@@ -23,5 +26,7 @@ export const routes = [
   
 
   export const userRoutes = [
-      
+      {path: "/", component: Home},
+      {path:"/details/:id", component: Details},
+     
   ];

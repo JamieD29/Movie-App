@@ -1,0 +1,9 @@
+.headerPage{
+    -webkit-box-shadow: inset 0px -11px 22px -15px #000000; 
+box-shadow: inset 0px -11px 22px -15px #000000;
+}
+
+.footerPage{
+    -webkit-box-shadow: inset 0px 20px 22px -15px #000000; 
+box-shadow: inset 0px 20px 22px -15px #000000;
+}

@@ -1,0 +1,62 @@
+.slick-prev::before, .slick-next::before{
+    color: gray;
+    font-size: 20px;
+    border: 1px solid black;
+  
+}
+
+.slick-list {margin: 0 -5px;}
+.slick-slide>div {padding: 0 5px;}
+
+.cardMovie{
+    position: relative;
+    width: 180px !important;
+    height: 300px;
+    padding: 0 10px;
+    border-radius: 20px;
+}
+
+.cardMovie img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.cardMovie .cardContent{
+    position: absolute;
+    width: 90%;
+    height: 35%;
+    
+    /* background-color: red; */
+    bottom: 0;
+    border-radius: 0 0 20px 20px;
+    z-index: 1;
+}
+
+.cardMovie .cardContent::before{
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: rgb(185, 185, 185, .1);
+    backdrop-filter: blur(5px);
+    border-radius: 0 0 20px 20px;
+    z-index: -1;
+}
+
+.cardContent h3{
+    color: white;
+    padding: 0 0 5px 10px;
+    font-size: 16px;
+}
+
+.cardContent h3 span.Imdb{
+    color: #000 !important;
+    background-color: yellow !important;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.showinTab:focus, .cominTab:focus{
+    color: rgb(167, 118, 26);
+}

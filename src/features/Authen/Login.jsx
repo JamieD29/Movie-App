@@ -44,10 +44,10 @@ const Login = () => {
   const formik = useFormik({
     initialValues,
     onSubmit : async values =>{
-      console.log(values);
+      
     const result = await  dispatch(userLogin(values))
       console.log(result);
-    result && navigate(-1);
+    result && navigate("/");
     },
     validate,
   })
@@ -56,7 +56,7 @@ const [auth, setAuth] = useState({token : localStorage.getItem('userToken')}) ;
  
   useEffect(()=>{
     if(auth.token){
-      navigate(-1)
+      navigate("/")
    }else{
     return;
    }

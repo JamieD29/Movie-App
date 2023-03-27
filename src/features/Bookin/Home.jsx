@@ -10,12 +10,15 @@ import homeStyle from './css/Home.module.css';
 import { fetchProfile } from "../Authen/authThunk";
 const Home = () => {
     const dispatch = useDispatch();
-   
+    const userInfo = useSelector(state=> state.userAuth.userLogin);
 
     useEffect(()=>{
       // Làm theo yêu cầu đề và xin phép được dùng hình theo ý thích :))
     dispatch(fetchBanner)
     dispatch(fetchMovies)
+
+   
+
     },[]);
   return (
     <>

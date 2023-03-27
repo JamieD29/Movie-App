@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
+
 
 const BASE_URL = "https://movienew.cybersoft.edu.vn/api";
 
@@ -12,6 +12,15 @@ export const https = axios.create({
     headers:{
         TokenCybersoft : TOKEN_CYBERSOFT,
         Authorization : "Bearer " + localStorage.getItem("adminToken"),
+    },
+    
+});
+
+export const userHttps = axios.create({
+    baseURL: BASE_URL,
+    headers:{
+        TokenCybersoft : TOKEN_CYBERSOFT,
+        Authorization : "Bearer " + localStorage.getItem("userToken"),
     },
     
 });

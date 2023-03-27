@@ -17,27 +17,33 @@ import { useNavigate } from "react-router-dom";
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
   return (
-    <RightCircleOutlined
-      className={className}
-      style={{ ...style }}
-      onClick={onClick}
-    />
+    <div
+    className={className}
+    style={{ ...style, display: "block" ,background: "brown", borderRadius: "50px" }}
+    onClick={onClick}
+  />
+    
+    // <RightCircleOutlined
+    //   className={className}
+    //   style={{ ...style }}
+    //   onClick={onClick}
+    // />
   );
 }
 
 function SamplePrevArrow(props) {
   const { className, style, onClick } = props;
   return (
-    // <div
-    //   className={className}
-    //   style={{ ...style, display: "block", background: "green" }}
-    //   onClick={onClick}
-    // />
-    <LeftCircleOutlined
+    <div
       className={className}
-      style={{ ...style }}
+      style={{ ...style, display: "block", background: "brown", borderRadius: "50px" }}
       onClick={onClick}
     />
+    // <LeftCircleOutlined
+    //   className={className}
+    //   style={{ ...style }}
+    //   onClick={onClick}
+    // />
   );
 }
 
@@ -110,28 +116,7 @@ const CominNShowin = () => {
   };
 
   const renderMovieCards = () => {
-    // if (movies === []) {
-    //   return showinMovies?.map((movie) => {
-    //     return (
-    //       <div className={`${styleSlick["cardMovie"]}`}>
-    //         <img className="" src={movie.hinhAnh} alt="" />
-    //         <div className={`${styleSlick["cardContent"]}`}>
-    //           <div className="w-full h-12">
-    //             <h4 className="ml-4 mt-0 text-white uppercase text-sm">
-    //               {movie.tenPhim}
-    //             </h4>
-    //           </div>
 
-    //           <h3>
-    //             <span className={`${styleSlick["Imdb"]}`}>IMDB</span>{" "}
-    //             <StarFilled className="bg-none text-yellow-500" />{" "}
-    //             {movie.danhGia}
-    //           </h3>
-    //         </div>
-    //       </div>
-    //     );
-    //   });
-    // } else {
       return movies?.map((movie) => {
         return (
           <div className={`${styleSlick["cardMovie"]}`}>
@@ -155,7 +140,7 @@ const CominNShowin = () => {
           </div>
         );
       });
-    // }
+    
   };
 
   const handleShowinMovies = () => {

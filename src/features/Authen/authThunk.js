@@ -10,11 +10,12 @@ export const fetchProfile = (authToken) => async (dispatch) => {
     dispatch({
       type: actionType.USER_LOGIN_PENDING
     })
-    const res = await appService.fetchProfile({
+    const res = await appService.fetchProfileUser({
       headers: {
         Authorization : "Bearer " + authToken
       },
     });
+    console.log(res.data.content);
     dispatch({
       type: actionType.USER_LOGGED,
       payload: res.data.content,

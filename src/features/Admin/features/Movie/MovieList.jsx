@@ -14,6 +14,7 @@ import { fetchMovies } from "../../thunk";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { deleteMovie } from "../../thunk";
 import FormItem from "antd/es/form/FormItem";
+import Swal from "sweetalert2";
 const MovieList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,8 +54,25 @@ const MovieList = () => {
     !localStorage.getItem("adminToken")
       ? (authorToken = adminLogin.accessToken)
       : (authorToken = localStorage.getItem("adminToken"));
-
-    dispatch(deleteMovie(movieCode, soTrang, authorToken));
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(deleteMovie(movieCode, soTrang, authorToken));
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+      })
+   
   };
 
   const handleEdit = (movieCode) => {

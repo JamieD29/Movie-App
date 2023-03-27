@@ -41,7 +41,7 @@ const Signin = () => {
   const formik = useFormik({
     initialValues,
     onSubmit : async values =>{
-      console.log(values);
+      
     const result = await  dispatch(login(values))
     result && navigate('/admin');
     },

@@ -41,11 +41,11 @@ export const login = (data) => {
 
       console.log(respond.data.content);
 
-      // if(respond.data.content.maLoaiNguoiDung === 'KhachHang') return Swal.fire({
-      //   icon: 'error',
-      //   title: 'Oops...',
-      //   text: 'Your account role is not ADMIN',
-      // });
+      if(respond.data.content.maLoaiNguoiDung === 'KhachHang') return Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Your account role is not ADMIN',
+      });
 
       Swal.fire({
         position: 'center',

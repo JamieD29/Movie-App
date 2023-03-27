@@ -3,7 +3,7 @@ import { adminService } from "./services/admin.service";
 import * as adminType from './constants/type';
 import Swal from "sweetalert2";
 
-const groupCode = "GP06";
+const groupCode = "GP07";
 
 
 export const fetchMovies = (soTrang, tenPhim) => async (dispatch) => {
@@ -98,13 +98,9 @@ export const deleteMovie = (movieCode, soTrang, authorToken) =>{
 
         console.log(res);
 
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Xóa thành công ',
-          showConfirmButton: false,
-          timer: 1500
-        })
+
+
+
         dispatch(fetchMovies(soTrang))
       }
       catch(err){

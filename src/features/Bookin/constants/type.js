@@ -11,7 +11,10 @@ export const USER_FETCH_HOT_MOVIES = "user/FETCH_HOT_MOIVES";
 
 export const USER_FETCH_SCHEDULE ='user/FETCH_SCHEDULE';
 
+export const USER_FETCH_MOVIE_PAGINATION = "user/FETCH_MOVIE_PAGINATION"
+
 
 //Movie Information
 export const USER_FETCH_MOVIE_INFO = 'user/FETCH_MOVIE_INFO';
-// export const USER_FETCH_MOVIE_SHOWTIME = 'user/FETCH_MOVIE_SHOWTIME';
+ export const USER_FETCH_MOVIE_SHOWTIME = 'user/FETCH_MOVIE_SHOWTIME';
+ export const USER_SELECT_SEATS = 'user/SELECT_SEATS';

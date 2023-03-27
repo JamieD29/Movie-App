@@ -11,6 +11,7 @@ import Home from "../features/Bookin/Home";
 import Details from "../features/Bookin/Details";
 import Login from '../features/Authen/Login';
 import Signup from "../features/Authen/Signup";
+import List from "../features/Bookin/List";
 
 export const routes = [
     { path: "/admin", component: Admin },
@@ -28,5 +29,5 @@ export const routes = [
   export const userRoutes = [
       {path: "/", component: Home},
       {path:"/details/:id", component: Details},
-     
+     {path:"/movielist", component: List}
   ];

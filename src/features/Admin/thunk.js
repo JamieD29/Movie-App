@@ -3,7 +3,7 @@ import { adminService } from "./services/admin.service";
 import * as adminType from './constants/type';
 import Swal from "sweetalert2";
 
-const groupCode = "GP07";
+const groupCode = "GP06";
 
 
 export const fetchMovies = (soTrang, tenPhim) => async (dispatch) => {
@@ -61,7 +61,7 @@ export const updateMovie = (formData, authorToken) => {
           let respond = await adminService.updateMovieInfo(formData, {headers: {
             Authorization : "Bearer " + authorToken
           }});
-          console.log(respond);
+          
           await Swal.fire({
             position: 'center',
             icon: 'success',
@@ -146,7 +146,7 @@ export const fetchCinemaChainOfBrand = (brandCode) => async dispatch => {
     const response = await adminService.fetchCinemaChainOfBrand({params:{
       maHeThongRap: brandCode
     }});
-    console.log(response.data.content);
+
     dispatch({
       type: adminType.ADMIN_FETCH_CHAIN,
       payload: response.data.content
@@ -247,7 +247,7 @@ export const createNewUser = (user, token) => async dispatch =>{
       title: "Oops...",
       text: err.response.data.content,
     });
-    console.log(err);
+    
     return false
   }
 }
@@ -262,7 +262,6 @@ export const deleteUser = (taiKhoan, soTrang, authorToken, soPhanTuTrenTrang) =>
       }
     });
 
-      console.log(res);
 
       Swal.fire({
         position: 'center',
@@ -294,7 +293,7 @@ export const getUserInfo = (taiKhoan, token) =>{
           Authorization : "Bearer " + token
         }
       })
-      // console.log(res.data.content);
+   
       dispatch({
         type: adminType.ADMIN_GET_DETAIL_USER,
         payload: res.data.content,

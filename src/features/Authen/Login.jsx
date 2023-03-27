@@ -46,7 +46,7 @@ const Login = () => {
     onSubmit : async values =>{
       
     const result = await  dispatch(userLogin(values))
-      console.log(result);
+      
     result && navigate("/");
     },
     validate,

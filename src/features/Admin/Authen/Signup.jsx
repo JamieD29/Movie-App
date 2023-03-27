@@ -43,12 +43,12 @@ const Signup = () => {
     },
     validationSchema : userSchema, 
     onSubmit: async values=>{
-      console.log(values);
+      
       const result = await dispatch(signup(values));
       result && navigate('/admin/signin');
     }
   })
-  console.log(user.errors);
+
   return (
     
     <FormLayout>

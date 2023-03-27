@@ -8,9 +8,9 @@ import "./css/Layout.css";
 const Layout = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userAuth.userLogin);
-  console.log(userInfo);
+
   const userLogged = useSelector((state) => state.userAuth.userLogged);
-  console.log(userLogged);
+
   const isLoading = useSelector((state) => state.userAuth.isLoading);
 
   const handleLogOut = async () => {
@@ -19,8 +19,6 @@ const Layout = () => {
       type: USER_LOG_OUT,
     });
   };
-
-
 
   const renderUserAction = () => {
     if (localStorage.getItem("userToken") === null) {
@@ -51,11 +49,14 @@ const Layout = () => {
           </div>
         </>
       );
-    }else{
+    } else {
       return (
         <div className="flex items-center mr-10">
           <p className="mr-5 text-lg">
-            Hello, <b className="text-orange-800">{userInfo?.hoTen || userLogged?.hoTen}</b>
+            Hello,{" "}
+            <b className="text-orange-800">
+              {userInfo?.hoTen || userLogged?.hoTen}
+            </b>
           </p>
           <button
             className="border-amber-300 bg-transparent cursor-pointer rounded-xl text-white p-2 hover:bg-amber-800 hover:text-white font-bold uppercase transition-all"
@@ -101,16 +102,17 @@ const Layout = () => {
                   </NavLink>
                 </li>
                 <li className="mr-10 ">
-                  <NavLink to="/movielist" className="no-underline text-orange-800 font-semibold text-lg hover:text-orange-700 hover:underline hover:decoration-dashed  transition-all">
+                  <NavLink
+                    to="/movielist"
+                    className="no-underline text-orange-800 font-semibold text-lg hover:text-orange-700 hover:underline hover:decoration-dashed  transition-all"
+                  >
                     {" "}
                     Movies{" "}
                   </NavLink>
                 </li>
               </ul>
             </div>
-            <div className="flex items-center">
-              {renderUserAction()}
-            </div>
+            <div className="flex items-center">{renderUserAction()}</div>
           </nav>
         </div>
       </header>

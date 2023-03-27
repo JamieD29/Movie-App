@@ -22,8 +22,6 @@ const Seats = () => {
     (state) => state.movieData.selectingSeatList
   );
 
-  console.log(thongTinPhim);
-  console.log(danhSachGhe);
 
   const renderSeats = () => {
     return danhSachGhe?.map((seat) => {

@@ -4,13 +4,12 @@ import * as userTypes from "./constants/type";
 import { InfoBookin } from "./utils/DetailsBookin";
 import Swal from "sweetalert2";
 
-const groupCode = "GP07";
+const groupCode = "GP06";
 
 export const fetchBanner = async (dispatch) => {
   try {
     dispatch({ type: userTypes.USER_FETCH_BANNERS_PENDING });
     const respond = await userService.fetchBanner();
-    console.log(respond.data.content);
     // dispatch({
     //     type: userTypes.USER_FETCH_BANNERS,
     //     payload: respond.data.content
@@ -28,7 +27,7 @@ export const fetchMovies = async (dispatch) => {
         maNhom: groupCode,
       },
     });
-    console.log(respond.data.content);
+
     await dispatch({
       type: userTypes.USER_FETCH_MOVIES,
       payload: respond.data.content,
@@ -76,24 +75,7 @@ export const fetchMovieInfo = (movieCode) => async (dispatch) => {
   }
 };
 
-// export const fetchMovieShowtime = (movieCode) => async dispatch =>{
-//     try{
-//         const respond = await userService.fetchMovieShowtime({
-//             params: {
-//                 MaPhim: movieCode
-//             }
-//         })
 
-//         console.log(respond.data.content);
-//         dispatch({
-//             type: userTypes.USER_FETCH_MOVIE_SHOWTIME,
-//             payload : respond.data.content
-//         })
-
-//     }catch(err){
-//         console.log(err);
-//     }
-// }
 
 export const fetchSeatList = (movieCode) => async (dispatch) => {
   try {
@@ -103,7 +85,7 @@ export const fetchSeatList = (movieCode) => async (dispatch) => {
       },
     });
 
-    console.log(respond.data.content);
+
     dispatch({
       type: userTypes.USER_FETCH_MOVIE_SHOWTIME,
       payload: respond.data.content,

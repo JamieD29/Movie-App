@@ -67,11 +67,10 @@ const CominNShowin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //  const movies = useSelector((state) => state.movieData.movies);
-    // console.log(movies);
+
 
   const showinMovies = useSelector((state) => state.movieData?.showinMovies);
- // console.log(showinMovies);
+
 
   const cominMovies = useSelector((state) => state.movieData.cominMovies);
 
